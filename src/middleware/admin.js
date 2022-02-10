@@ -1,7 +1,7 @@
 const auth = async (req, res, next) => {
 	try {
-		if (req.user.role !== 'admin') {
-			throw new Error('User is missing admin privilegies.');
+		if (req?.user.role !== 'admin') {
+			throw new Error('Missing admin privilegies.');
 		}
 		next();
 	} catch (err) {

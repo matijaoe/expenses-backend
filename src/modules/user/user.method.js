@@ -37,10 +37,38 @@ const loginUser = async (email, password) => {
 
 const listUsers = async () => {
 	try {
-		const users = await User.find({});
-		return users;
+		return await User.find({});
 	} catch (err) {
 		throw new Error('Error fetching users.');
+	}
+};
+
+const getUserById = async (id) => {
+	try {
+		return await User.findById(id);
+	} catch (err) {
+		throw new Error('Error fetching user');
+	}
+};
+
+const updateUser = async (id, updates) => {
+	try {
+		const user = await User.findOneAndUpdate({ _id: id }, updates, {
+			new: true,
+			runValidators: true,
+		});
+		return user;
+	} catch (err) {
+		throw new Error(err.message);
+	}
+};
+
+const deleteUser = async (id) => {
+	try {
+		const { deletedCount } = await User.deleteOne({ _id: id });
+		return deletedCount === 1;
+	} catch (err) {
+		throw new Error('Error deleting user');
 	}
 };
 
@@ -48,4 +76,7 @@ export default {
 	createUser,
 	loginUser,
 	listUsers,
+	getUserById,
+	updateUser,
+	deleteUser,
 };

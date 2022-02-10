@@ -11,7 +11,12 @@ router
 	.patch(auth, userController.updateCurrentUser)
 	.delete(auth, userController.deleteCurrentUser);
 
-// TODO: admin middlew
 router.route('/').get([auth, admin], userController.getAllUsers);
+
+router
+	.route('/:id')
+	.get([auth, admin], userController.getUser)
+	.patch([auth, admin], userController.updateUser)
+	.delete([auth, admin], userController.deleteUser);
 
 export default router;

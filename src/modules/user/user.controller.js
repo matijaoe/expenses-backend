@@ -1,6 +1,5 @@
 import userMethods from './user.method.js';
 
-/* eslint-disable no-unreachable */
 const getCurrentUser = (req, res) => {
 	console.log(req.user);
 	res.status(200).send(req.user);
@@ -8,10 +7,7 @@ const getCurrentUser = (req, res) => {
 
 const updateCurrentUser = async (req, res) => {
 	const updates = Object.keys(req.body);
-	console.log('updates :>> ', updates);
-	const allowedUpdates = ['name', 'email', 'password'];
-
-	const isValidOperation = updates.every((val) => allowedUpdates.includes(val));
+	const isValidOperation = isValidUpdate(updates);
 
 	if (!isValidOperation) {
 		return res.status(400).send({ error: 'Invalid updates' });
@@ -46,9 +42,62 @@ const getAllUsers = async (req, res) => {
 	}
 };
 
+const getUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const user = await userMethods.getUserById(id);
+		if (!user) {
+			return res.status(400).send({ error: 'User not found.' });
+		}
+		res.send(user);
+	} catch (err) {
+		res.status(500).send({ error: err.message });
+	}
+};
+
+const updateUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const updates = Object.keys(req.body);
+		const isValidOperation = isValidUpdate(updates);
+
+		if (!isValidOperation) {
+			return res.status(400).send({ error: 'Invalid updates' });
+		}
+
+		const user = await userMethods.updateUser(id, req.body);
+		res.status(202).send(user);
+	} catch (err) {
+		res.status(500).send({ error: err.message });
+	}
+};
+
+const deleteUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const deleted = await userMethods.deleteUser(id);
+		if (!deleted) {
+			return res.status(400).send({ error: 'User not found.' });
+		}
+		res.send('User deleted');
+	} catch (err) {
+		res.status(500).send({ error: err.message });
+	}
+};
+
+const isValidUpdate = (updates) => {
+	const allowedUpdates = ['name', 'email', 'password', 'role'];
+
+	return updates.every((val) => allowedUpdates.includes(val));
+};
+
 export default {
 	getCurrentUser,
 	updateCurrentUser,
 	deleteCurrentUser,
 	getAllUsers,
+	getUser,
+	updateUser,
+	deleteUser,
+	isValidUpdate,
 };
