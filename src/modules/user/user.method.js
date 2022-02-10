@@ -35,7 +35,17 @@ const loginUser = async (email, password) => {
 	}
 };
 
+const listUsers = async () => {
+	try {
+		const users = await User.find({});
+		return users;
+	} catch (err) {
+		throw new Error('Error fetching users.');
+	}
+};
+
 export default {
 	createUser,
 	loginUser,
+	listUsers,
 };

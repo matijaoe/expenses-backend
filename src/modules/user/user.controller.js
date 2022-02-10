@@ -1,3 +1,5 @@
+import userMethods from './user.method.js';
+
 /* eslint-disable no-unreachable */
 const getCurrentUser = (req, res) => {
 	console.log(req.user);
@@ -32,8 +34,21 @@ const deleteCurrentUser = async (req, res) => {
 	}
 };
 
+const getAllUsers = async (req, res) => {
+	try {
+		const users = await userMethods.listUsers();
+		if (!users) {
+			return res.status(400).send({ error: 'Users not found.' });
+		}
+		res.status(200).send(users);
+	} catch (err) {
+		res.status(500).send({ error: err.message });
+	}
+};
+
 export default {
 	getCurrentUser,
 	updateCurrentUser,
 	deleteCurrentUser,
+	getAllUsers,
 };
