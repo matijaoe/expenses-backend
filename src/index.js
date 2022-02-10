@@ -6,30 +6,24 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import routes from './routes.js';
 
-const PORT = process.env.PORT || 5000;
+import './db/mongoose.js';
 
 dotenv.config();
+
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// secure apps by setting various HTTP headers
-app.use(helmet());
-
-// enable CORS - Cross Origin Resource Sharing
 app.use(cors());
-
+app.use(helmet());
 app.use(morgan('dev'));
 
-// mount all routes on /api path
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
 	res.send('Hello World');
 });
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀️ Running on port ${PORT}`));
