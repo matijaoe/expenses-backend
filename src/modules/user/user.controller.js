@@ -1,23 +1,34 @@
 /* eslint-disable no-unreachable */
 const getCurrentUser = (req, res) => {
+	console.log(req.user);
+	res.status(200).send(req.user);
+};
+
+const updateCurrentUser = async (req, res) => {
+	const updates = Object.keys(req.body);
+	console.log('updates :>> ', updates);
+	const allowedUpdates = ['name', 'email', 'password'];
+
+	const isValidOperation = updates.every((val) => allowedUpdates.includes(val));
+
+	if (!isValidOperation) {
+		return res.status(400).send({ error: 'Invalid updates' });
+	}
 	try {
-		return true;
+		updates.forEach((update) => (req.user[update] = req.body[update]));
+		await req.user.save();
+		res.status(202).send(req.user);
 	} catch (err) {
-		console.error(err.message);
+		res.status(500).send({ error: err.message });
 	}
 };
-const updateCurrentUser = (req, res) => {
+
+const deleteCurrentUser = async (req, res) => {
 	try {
-		return true;
+		await req.user.remove();
+		res.status(200).send('User deleted');
 	} catch (err) {
-		console.error(err.message);
-	}
-};
-const deleteCurrentUser = (req, res) => {
-	try {
-		return true;
-	} catch (err) {
-		console.error(err.message);
+		res.status(500).send({ error: err.message });
 	}
 };
 

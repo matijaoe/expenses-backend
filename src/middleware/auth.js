@@ -4,13 +4,11 @@ import User from '../modules/user/user.model.js';
 const auth = async (req, res, next) => {
 	try {
 		const [, token] = req.header('Authorization').split(' ');
-		console.log('token :>> ', token);
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		const user = await User.findOne({
 			_id: decoded._id,
 			'tokens.token': token,
 		});
-		console.log('user :>> ', user);
 
 		if (!user) {
 			throw new Error('User not found');

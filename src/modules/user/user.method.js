@@ -13,7 +13,8 @@ const createUser = async (userData) => {
 
 	try {
 		await user.save();
-		return user;
+		const token = await user.generateAuthToken();
+		return { user, token };
 	} catch (err) {
 		throw new Error(err.message);
 	}
