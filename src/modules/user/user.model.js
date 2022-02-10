@@ -25,7 +25,7 @@ const userSchema = new Schema(
 		},
 		password: {
 			type: String,
-			required: true,
+			required: [true, 'Password not provided.'],
 			trim: true,
 			minLength: [5, 'Password must be at least 6 characters.'],
 		},
@@ -61,6 +61,22 @@ userSchema.methods.toJSON = function () {
 	delete userObject.tokens;
 
 	return userObject;
+};
+
+userSchema.statics.findByCredentials = async (email, password) => {
+	const user = await User.findOne({ email });
+
+	if (!user) {
+		throw new Error('Unable to login');
+	}
+
+	const isMatch = await bcrypt.compare(password, user.password);
+
+	if (!isMatch) {
+		throw new Error('Unable to login');
+	}
+
+	return user;
 };
 
 // Hash the plain text password

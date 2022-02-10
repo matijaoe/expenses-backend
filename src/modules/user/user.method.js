@@ -10,15 +10,31 @@ const createUser = async (userData) => {
 		);
 		throw new Error(errorMsgs.join(' '));
 	}
+
 	try {
-		const saved = await user.save();
-		console.log(saved);
+		await user.save();
 		return user;
 	} catch (err) {
-		throw new Error('Error creating user');
+		throw new Error(err.message);
+	}
+};
+
+const loginUser = async (email, password) => {
+	try {
+		const user = await User.findByCredentials(email, password);
+		const token = await user.generateAuthToken();
+
+		if (!user) {
+			throw new Error('User not found');
+		}
+
+		return { user, token };
+	} catch (err) {
+		throw new Error(err.message);
 	}
 };
 
 export default {
 	createUser,
+	loginUser,
 };
