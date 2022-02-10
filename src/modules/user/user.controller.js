@@ -10,7 +10,7 @@ const updateCurrentUser = async (req, res) => {
 	const isValidOperation = isValidUpdate(updates);
 
 	if (!isValidOperation) {
-		return res.status(400).send({ error: 'Invalid updates' });
+		return res.status().send({ error: 'Invalid updates' });
 	}
 	try {
 		updates.forEach((update) => (req.user[update] = req.body[update]));
@@ -34,7 +34,7 @@ const getAllUsers = async (req, res) => {
 	try {
 		const users = await userMethods.listUsers();
 		if (!users) {
-			return res.status(400).send({ error: 'Users not found.' });
+			return res.status(404).send({ error: 'Users not found.' });
 		}
 		res.status(200).send(users);
 	} catch (err) {
@@ -47,7 +47,7 @@ const getUser = async (req, res) => {
 		const { id } = req.params;
 		const user = await userMethods.getUserById(id);
 		if (!user) {
-			return res.status(400).send({ error: 'User not found.' });
+			return res.status(404).send({ error: 'User not found.' });
 		}
 		res.send(user);
 	} catch (err) {
@@ -77,7 +77,7 @@ const deleteUser = async (req, res) => {
 		const { id } = req.params;
 		const deleted = await userMethods.deleteUser(id);
 		if (!deleted) {
-			return res.status(400).send({ error: 'User not found.' });
+			return res.status(404).send({ error: 'User not found.' });
 		}
 		res.send('User deleted');
 	} catch (err) {

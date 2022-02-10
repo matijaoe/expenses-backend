@@ -25,10 +25,6 @@ const loginUser = async (email, password) => {
 		const user = await User.findByCredentials(email, password);
 		const token = await user.generateAuthToken();
 
-		if (!user) {
-			throw new Error('User not found');
-		}
-
 		return { user, token };
 	} catch (err) {
 		throw new Error(err.message);
@@ -51,9 +47,9 @@ const getUserById = async (id) => {
 	}
 };
 
-const updateUser = async (id, updates) => {
+const updateUser = async (_id, updates) => {
 	try {
-		const user = await User.findOneAndUpdate({ _id: id }, updates, {
+		const user = await User.findOneAndUpdate({ _id }, updates, {
 			new: true,
 			runValidators: true,
 		});
@@ -63,9 +59,9 @@ const updateUser = async (id, updates) => {
 	}
 };
 
-const deleteUser = async (id) => {
+const deleteUser = async (_id) => {
 	try {
-		const { deletedCount } = await User.deleteOne({ _id: id });
+		const { deletedCount } = await User.deleteOne({ _id });
 		return deletedCount === 1;
 	} catch (err) {
 		throw new Error('Error deleting user');

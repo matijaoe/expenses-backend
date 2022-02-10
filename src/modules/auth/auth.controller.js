@@ -4,9 +4,14 @@ const login = async (req, res) => {
 	try {
 		const { email, password } = req.body;
 		const { user, token } = await userMethods.loginUser(email, password);
+
+		if (!user) {
+			return res.status(400).send({ error: 'User not found.' });
+		}
+
 		res.status(200).send({ user, token });
-	} catch (error) {
-		res.status(400).send({ error: error.message });
+	} catch (err) {
+		res.status(404).send({ error: err.message });
 	}
 };
 
