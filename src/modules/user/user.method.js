@@ -16,7 +16,7 @@ const createUser = async (userData) => {
 		const token = await user.generateAuthToken();
 		return { user, token };
 	} catch (err) {
-		throw new Error(err.message);
+		throw new Error('Error registering user.');
 	}
 };
 
@@ -61,8 +61,7 @@ const updateUser = async (_id, updates) => {
 
 const deleteUser = async (_id) => {
 	try {
-		const { deletedCount } = await User.deleteOne({ _id });
-		return deletedCount === 1;
+		return await User.findOneAndDelete({ _id });
 	} catch (err) {
 		throw new Error('Error deleting user');
 	}

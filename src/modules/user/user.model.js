@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import Expense from '../expenses/expense.model.js';
 
 const { Schema } = mongoose;
 
@@ -59,6 +60,12 @@ userSchema.methods.generateAuthToken = async function () {
 	return token;
 };
 
+userSchema.virtual('expenses', {
+	ref: 'Expense',
+	localField: '_id',
+	foreignField: 'owner',
+});
+
 userSchema.methods.toJSON = function () {
 	const user = this;
 	const userObject = user.toObject();
@@ -94,13 +101,12 @@ userSchema.pre('save', async function (next) {
 	next();
 });
 
-// TODO
-// Delete user tasks when user is removed
-// userSchema.pre('remove', async function (next) {
-// 	const user = this;
-// 	// await Task.deleteMany({ owner: user._id });
-// 	next();
-// });
+// Delete user expenses when user is removed
+userSchema.pre('remove', async function (next) {
+	const user = this;
+	await Expense.deleteMany({ owner: user._id });
+	next();
+});
 
 const User = new mongoose.model('User', userSchema);
 

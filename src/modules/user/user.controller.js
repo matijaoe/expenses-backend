@@ -24,7 +24,7 @@ const updateCurrentUser = async (req, res) => {
 const deleteCurrentUser = async (req, res) => {
 	try {
 		await req.user.remove();
-		res.status(200).send('User deleted');
+		res.status(200).send({ message: 'User deleted' });
 	} catch (err) {
 		res.status(500).send({ error: err.message });
 	}
@@ -73,13 +73,14 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+	console.log(deleteUser, req.params.id);
 	try {
 		const { id } = req.params;
-		const deleted = await userMethods.deleteUser(id);
-		if (!deleted) {
+		const user = await userMethods.deleteUser(id);
+		if (!user) {
 			return res.status(404).send({ error: 'User not found.' });
 		}
-		res.send('User deleted');
+		res.send(user);
 	} catch (err) {
 		res.status(500).send({ error: err.message });
 	}
@@ -87,7 +88,6 @@ const deleteUser = async (req, res) => {
 
 const isValidUpdate = (updates) => {
 	const allowedUpdates = ['name', 'email', 'password', 'role'];
-
 	return updates.every((val) => allowedUpdates.includes(val));
 };
 

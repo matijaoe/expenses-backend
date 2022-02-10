@@ -14,16 +14,13 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cors());
-app.use(helmet());
-app.use(morgan('dev'));
+app
+	.use(bodyParser.urlencoded({ extended: true }))
+	.use(bodyParser.json())
+	.use(cors())
+	.use(helmet())
+	.use(morgan('dev'));
 
 app.use('/api', routes);
-
-app.get('/', async (req, res) => {
-	res.send('Hello World');
-});
 
 app.listen(PORT, () => console.log(`🚀️ Running on port ${PORT}`));

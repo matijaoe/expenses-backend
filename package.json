@@ -5,6 +5,9 @@
 	"author": "Matija Osrečki",
 	"license": "MIT",
 	"type": "module",
+	"engines": {
+		"node": ">=14.0.0"
+	},
 	"scripts": {
 		"dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
 		"start": "node src/index"
