@@ -10,7 +10,7 @@ const updateCurrentUser = async (req, res) => {
 	const isValidOperation = isValidUpdate(updates);
 
 	if (!isValidOperation) {
-		return res.status().send({ error: 'Invalid updates' });
+		return res.status().send({ error: 'Invalid updates.' });
 	}
 	try {
 		updates.forEach((update) => (req.user[update] = req.body[update]));
@@ -59,10 +59,9 @@ const updateUser = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const updates = Object.keys(req.body);
-		const isValidOperation = isValidUpdate(updates);
 
-		if (!isValidOperation) {
-			return res.status(400).send({ error: 'Invalid updates' });
+		if (!isValidUpdate(updates)) {
+			return res.status(400).send({ error: 'Invalid updates.' });
 		}
 
 		const user = await userMethods.updateUser(id, req.body);
@@ -73,9 +72,8 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-	console.log(deleteUser, req.params.id);
+	const { id } = req.params;
 	try {
-		const { id } = req.params;
 		const user = await userMethods.deleteUser(id);
 		if (!user) {
 			return res.status(404).send({ error: 'User not found.' });

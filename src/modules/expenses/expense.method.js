@@ -36,6 +36,17 @@ const createExpense = async (owner, expenseData) => {
 	}
 };
 
+const updateExpense = async (_id, expenseData, owner) => {
+	try {
+		return await Expense.findOneAndUpdate({ _id, owner }, expenseData, {
+			new: true,
+			runValidators: true,
+		});
+	} catch (err) {
+		throw new Error(err.message);
+	}
+};
+
 const deleteExpense = async (_id, owner) => {
 	try {
 		return await Expense.findOneAndDelete({ _id, owner });
@@ -48,5 +59,6 @@ export default {
 	listExpenses,
 	getExpense,
 	createExpense,
+	updateExpense,
 	deleteExpense,
 };
