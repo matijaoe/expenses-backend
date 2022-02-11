@@ -1,6 +1,6 @@
 import User from '../user/user.model.js';
 
-const createUser = async (userData) => {
+export const createUser = async (userData) => {
 	const user = new User(userData);
 	const err = user.validateSync();
 	if (err) {
@@ -20,7 +20,7 @@ const createUser = async (userData) => {
 	}
 };
 
-const loginUser = async (email, password) => {
+export const loginUser = async (email, password) => {
 	try {
 		const user = await User.findByCredentials(email, password);
 		const token = await user.generateAuthToken();
@@ -31,7 +31,7 @@ const loginUser = async (email, password) => {
 	}
 };
 
-const listUsers = async () => {
+export const listUsers = async () => {
 	try {
 		return await User.find({});
 	} catch (err) {
@@ -39,7 +39,7 @@ const listUsers = async () => {
 	}
 };
 
-const getUserById = async (id) => {
+export const getUserById = async (id) => {
 	try {
 		return await User.findById(id);
 	} catch (err) {
@@ -47,7 +47,7 @@ const getUserById = async (id) => {
 	}
 };
 
-const updateUser = async (_id, updates) => {
+export const updateUser = async (_id, updates) => {
 	try {
 		const user = await User.findOneAndUpdate({ _id }, updates, {
 			new: true,
@@ -59,19 +59,10 @@ const updateUser = async (_id, updates) => {
 	}
 };
 
-const deleteUser = async (_id) => {
+export const deleteUser = async (_id) => {
 	try {
 		return await User.findOneAndDelete({ _id });
 	} catch (err) {
 		throw new Error('Error deleting user');
 	}
-};
-
-export default {
-	createUser,
-	loginUser,
-	listUsers,
-	getUserById,
-	updateUser,
-	deleteUser,
 };

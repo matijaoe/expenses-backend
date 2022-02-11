@@ -1,11 +1,11 @@
-import userMethods from './user.method.js';
+import * as userMethods from './user.method.js';
 
-const getCurrentUser = (req, res) => {
+export const getCurrentUser = (req, res) => {
 	console.log(req.user);
 	res.status(200).send(req.user);
 };
 
-const updateCurrentUser = async (req, res) => {
+export const updateCurrentUser = async (req, res) => {
 	const updates = Object.keys(req.body);
 	const isValidOperation = isValidUpdate(updates);
 
@@ -21,7 +21,7 @@ const updateCurrentUser = async (req, res) => {
 	}
 };
 
-const deleteCurrentUser = async (req, res) => {
+export const deleteCurrentUser = async (req, res) => {
 	try {
 		await req.user.remove();
 		res.status(200).send({ message: 'User deleted' });
@@ -30,7 +30,7 @@ const deleteCurrentUser = async (req, res) => {
 	}
 };
 
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
 	try {
 		const users = await userMethods.listUsers();
 		if (!users) {
@@ -42,7 +42,7 @@ const getAllUsers = async (req, res) => {
 	}
 };
 
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const user = await userMethods.getUserById(id);
@@ -55,7 +55,7 @@ const getUser = async (req, res) => {
 	}
 };
 
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const updates = Object.keys(req.body);
@@ -71,7 +71,7 @@ const updateUser = async (req, res) => {
 	}
 };
 
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const user = await userMethods.deleteUser(id);
@@ -84,18 +84,7 @@ const deleteUser = async (req, res) => {
 	}
 };
 
-const isValidUpdate = (updates) => {
+export const isValidUpdate = (updates) => {
 	const allowedUpdates = ['name', 'email', 'password', 'role'];
 	return updates.every((val) => allowedUpdates.includes(val));
-};
-
-export default {
-	getCurrentUser,
-	updateCurrentUser,
-	deleteCurrentUser,
-	getAllUsers,
-	getUser,
-	updateUser,
-	deleteUser,
-	isValidUpdate,
 };

@@ -10,6 +10,11 @@ const expenseCategorySchema = new Schema({
 		trim: true,
 		lowercase: true,
 	},
+	owner: {
+		// if it's null, it's global (only admin can add)
+		type: Schema.Types.ObjectId | null,
+		default: null,
+	},
 });
 
 const ExpenseCategory = new mongoose.model(

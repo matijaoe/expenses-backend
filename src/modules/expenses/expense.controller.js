@@ -1,6 +1,6 @@
-import expenseMethods from './expense.method.js';
+import * as expenseMethods from './expense.method.js';
 
-const getExpenses = async (req, res) => {
+export const getExpenses = async (req, res) => {
 	try {
 		const expenses = await expenseMethods.listExpenses(req.user._id);
 		res.status(200).send(expenses);
@@ -9,7 +9,7 @@ const getExpenses = async (req, res) => {
 	}
 };
 
-const getExpense = async (req, res) => {
+export const getExpense = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const expense = await expenseMethods.getExpense(id, req.user._id);
@@ -24,7 +24,7 @@ const getExpense = async (req, res) => {
 	}
 };
 
-const createExpense = async (req, res) => {
+export const createExpense = async (req, res) => {
 	try {
 		const expense = await expenseMethods.createExpense(req.user.id, req.body);
 		res.status(201).send(expense);
@@ -33,7 +33,7 @@ const createExpense = async (req, res) => {
 	}
 };
 
-const updateExpense = async (req, res) => {
+export const updateExpense = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const updates = Object.keys(req.body);
@@ -53,7 +53,7 @@ const updateExpense = async (req, res) => {
 	}
 };
 
-const deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const deletedExpense = await expenseMethods.deleteExpense(id, req.user._id);
@@ -68,7 +68,7 @@ const deleteExpense = async (req, res) => {
 	}
 };
 
-const isValidUpdate = (updates) => {
+export const isValidUpdate = (updates) => {
 	const allowedUpdates = [
 		'title',
 		'description',
@@ -78,12 +78,4 @@ const isValidUpdate = (updates) => {
 		'category',
 	];
 	return updates.every((val) => allowedUpdates.includes(val));
-};
-
-export default {
-	getExpenses,
-	getExpense,
-	createExpense,
-	updateExpense,
-	deleteExpense,
 };

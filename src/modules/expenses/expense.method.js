@@ -1,6 +1,6 @@
 import Expense from './expense.model.js';
 
-const listExpenses = async (userId) => {
+export const listExpenses = async (userId) => {
 	try {
 		return await Expense.find({ owner: userId });
 	} catch (err) {
@@ -8,7 +8,7 @@ const listExpenses = async (userId) => {
 	}
 };
 
-const getExpense = async (_id, owner) => {
+export const getExpense = async (_id, owner) => {
 	try {
 		return await Expense.findOne({ _id, owner });
 	} catch (err) {
@@ -16,7 +16,7 @@ const getExpense = async (_id, owner) => {
 	}
 };
 
-const createExpense = async (owner, expenseData) => {
+export const createExpense = async (owner, expenseData) => {
 	const expense = new Expense({ ...expenseData, owner });
 
 	const err = expense.validateSync();
@@ -29,14 +29,13 @@ const createExpense = async (owner, expenseData) => {
 	}
 
 	try {
-		await expense.save();
-		return expense;
+		return await expense.save();
 	} catch (err) {
-		throw new Error('Error creating expense');
+		throw new Error('Error creating expense.');
 	}
 };
 
-const updateExpense = async (_id, expenseData, owner) => {
+export const updateExpense = async (_id, expenseData, owner) => {
 	try {
 		return await Expense.findOneAndUpdate({ _id, owner }, expenseData, {
 			new: true,
@@ -47,18 +46,10 @@ const updateExpense = async (_id, expenseData, owner) => {
 	}
 };
 
-const deleteExpense = async (_id, owner) => {
+export const deleteExpense = async (_id, owner) => {
 	try {
 		return await Expense.findOneAndDelete({ _id, owner });
 	} catch (err) {
 		throw new Error('Error deleting expense');
 	}
-};
-
-export default {
-	listExpenses,
-	getExpense,
-	createExpense,
-	updateExpense,
-	deleteExpense,
 };

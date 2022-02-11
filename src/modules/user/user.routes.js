@@ -1,5 +1,5 @@
 import express from 'express';
-import userController from './user.controller.js';
+import * as userController from './user.controller.js';
 import auth from '../../middleware/auth.js';
 import admin from '../../middleware/admin.js';
 
