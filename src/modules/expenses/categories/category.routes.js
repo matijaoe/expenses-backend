@@ -11,15 +11,18 @@ router.use(auth);
 router
 	.route('/')
 	.get(categoryController.getCategories)
-	.post(categoryController.createCategory);
+	.post(categoryController.addCategory);
 
 // for admin
-router.route('/global').get([admin], categoryController.getGlobalCategories);
+router.route('/global').post([admin], categoryController.addGlobalCategory);
+
+router
+	.route('/global/:id')
+	.delete([admin], categoryController.deleteGlobalCategory);
 
 router
 	.route('/:id')
 	.get(categoryController.getCategory)
-	.patch(categoryController.updateCategory)
 	.delete(categoryController.deleteCategory);
 
 export default router;

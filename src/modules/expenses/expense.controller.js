@@ -26,7 +26,7 @@ export const getExpense = async (req, res) => {
 
 export const createExpense = async (req, res) => {
 	try {
-		const expense = await expenseMethods.createExpense(req.user.id, req.body);
+		const expense = await expenseMethods.createExpense(req.body, req.user.id);
 		res.status(201).send(expense);
 	} catch (err) {
 		res.status(500).send({ error: err.message });
@@ -56,19 +56,22 @@ export const updateExpense = async (req, res) => {
 export const deleteExpense = async (req, res) => {
 	const { id } = req.params;
 	try {
-		const deletedExpense = await expenseMethods.deleteExpense(id, req.user._id);
+		const deletedCategory = await expenseMethods.deleteExpense(
+			id,
+			req.user._id
+		);
 
-		if (!deletedExpense) {
-			return res.status(404).send({ error: 'Expense not found.' });
+		if (!deletedCategory) {
+			return res.status(404).send({ error: 'Category not found.' });
 		}
 
-		return res.status(200).send(deletedExpense);
+		return res.status(200).send(deletedCategory);
 	} catch (err) {
 		res.status(500).send({ error: err.message });
 	}
 };
 
-export const isValidUpdate = (updates) => {
+const isValidUpdate = (updates) => {
 	const allowedUpdates = [
 		'title',
 		'description',

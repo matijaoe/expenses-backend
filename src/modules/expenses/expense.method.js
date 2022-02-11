@@ -16,7 +16,7 @@ export const getExpense = async (_id, owner) => {
 	}
 };
 
-export const createExpense = async (owner, expenseData) => {
+export const createExpense = async (expenseData, owner) => {
 	const expense = new Expense({ ...expenseData, owner });
 
 	const err = expense.validateSync();

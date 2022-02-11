@@ -84,7 +84,7 @@ export const deleteUser = async (req, res) => {
 	}
 };
 
-export const isValidUpdate = (updates) => {
+const isValidUpdate = (updates) => {
 	const allowedUpdates = ['name', 'email', 'password', 'role'];
 	return updates.every((val) => allowedUpdates.includes(val));
 };
