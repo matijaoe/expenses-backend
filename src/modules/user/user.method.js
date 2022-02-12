@@ -47,6 +47,7 @@ export const getUserById = async (id) => {
 	}
 };
 
+// TODO: password update doesnt work (pre actions aint running)
 export const updateUser = async (_id, updates) => {
 	try {
 		const user = await User.findOneAndUpdate({ _id }, updates, {

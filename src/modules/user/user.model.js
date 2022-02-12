@@ -1,7 +1,7 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import validator from 'validator';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import Expense from '../expenses/expense.model.js';
 
 const { Schema } = mongoose;
@@ -95,8 +95,10 @@ userSchema.statics.findByCredentials = async (email, password) => {
 // Hash the plain text password
 userSchema.pre('save', async function (next) {
 	const user = this;
+
 	if (user.isModified('password')) {
 		user.password = await bcrypt.hash(user.password, 8);
+		console.log('hash password');
 	}
 	next();
 });

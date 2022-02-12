@@ -10,7 +10,7 @@ export const updateCurrentUser = async (req, res) => {
 	const isValidOperation = isValidUpdate(updates);
 
 	if (!isValidOperation) {
-		return res.status().send({ error: 'Invalid updates.' });
+		return res.status(400).send({ error: 'Invalid updates.' });
 	}
 	try {
 		updates.forEach((update) => (req.user[update] = req.body[update]));
@@ -60,10 +60,10 @@ export const updateUser = async (req, res) => {
 		const { id } = req.params;
 		const updates = Object.keys(req.body);
 
-		if (!isValidUpdate(updates)) {
+		if (!isValidUpdate(updates, req.isAdmin)) {
 			return res.status(400).send({ error: 'Invalid updates.' });
 		}
-
+		// TODO: password update doesnt work
 		const user = await userMethods.updateUser(id, req.body);
 		res.status(202).send(user);
 	} catch (err) {
@@ -84,7 +84,11 @@ export const deleteUser = async (req, res) => {
 	}
 };
 
-const isValidUpdate = (updates) => {
-	const allowedUpdates = ['name', 'email', 'password', 'role'];
+const isValidUpdate = (updates, isAdmin = false) => {
+	const allowedUpdates = ['name', 'email', 'password'];
+	if (isAdmin) {
+		allowedUpdates.push('role');
+		allowedUpdates.splice(updates.indexOf('password'), 1);
+	}
 	return updates.every((val) => allowedUpdates.includes(val));
 };
