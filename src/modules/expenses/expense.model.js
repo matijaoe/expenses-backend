@@ -36,7 +36,7 @@ const expenseSchema = new Schema(
 		},
 		category: {
 			type: Schema.Types.ObjectId,
-			// required: [true, 'Category not provided.'],
+			required: [true, 'Category not provided.'],
 			ref: 'ExpenseCategory',
 		},
 	},
