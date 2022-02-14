@@ -66,10 +66,8 @@ export const deleteCategory = async (req, res) => {
 };
 
 export const deleteGlobalCategory = async (req, res) => {
-	console.log('deleteGlobalCategory!!!');
 	const { id } = req.params;
 	try {
-		console.log(deleteGlobalCategory);
 		const deletedCategory = await categoryMethods.deleteCategory(id, null);
 
 		if (!deletedCategory) {

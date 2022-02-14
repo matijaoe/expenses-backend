@@ -1,7 +1,6 @@
 import * as userMethods from './user.method.js';
 
 export const getCurrentUser = (req, res) => {
-	console.log(req.user);
 	res.status(200).send(req.user);
 };
 

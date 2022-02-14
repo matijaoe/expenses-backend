@@ -109,8 +109,7 @@ userSchema.pre(
 	{ document: true, query: false },
 	async function (next) {
 		const user = this;
-		const res = await Expense.deleteMany({ owner: user._id });
-		console.log('res', res);
+		await Expense.deleteMany({ owner: user._id });
 		next();
 	}
 );

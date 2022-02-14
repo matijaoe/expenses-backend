@@ -19,7 +19,6 @@ export const createUser = async (userData) => {
 		}
 
 		await user.save();
-		console.log('hey');
 		const token = await user.generateAuthToken();
 		return { user, token };
 	} catch (err) {
