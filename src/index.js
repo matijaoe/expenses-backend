@@ -1,12 +1,11 @@
-import express from 'express';
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import morgan from 'morgan';
+import dotenv from 'dotenv';
+import express from 'express';
 import helmet from 'helmet';
-import routes from './routes.js';
-
+import morgan from 'morgan';
 import './db/mongoose.js';
+import routes from './routes.js';
 
 dotenv.config();
 
@@ -20,6 +19,10 @@ app
 	.use(cors())
 	.use(helmet())
 	.use(morgan('dev'));
+
+app.get('/', (req, res) => {
+	res.send('Pozdrav kolega 👋️');
+});
 
 app.use('/api', routes);
 
