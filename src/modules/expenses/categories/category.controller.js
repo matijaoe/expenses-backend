@@ -38,6 +38,7 @@ export const addCategory = async (req, res) => {
 		res.status(500).send({ error: err.message });
 	}
 };
+
 export const addGlobalCategory = async (req, res) => {
 	try {
 		const category = await categoryMethods.createCategory(req.body, null);

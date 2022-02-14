@@ -12,10 +12,10 @@ const expenseCategorySchema = new Schema({
 		lowercase: true,
 	},
 	owner: {
-		// if it's null, it's global (only admin can add)
 		required: false,
 		type: Schema.Types.ObjectId,
 		default: null,
+		ref: 'User',
 	},
 });
 
