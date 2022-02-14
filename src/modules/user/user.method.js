@@ -12,11 +12,18 @@ export const createUser = async (userData) => {
 	}
 
 	try {
+		const count = await User.countDocuments({ email: user.email });
+
+		if (count > 0) {
+			throw new Error('User already registered.');
+		}
+
 		await user.save();
+		console.log('hey');
 		const token = await user.generateAuthToken();
 		return { user, token };
 	} catch (err) {
-		throw new Error('Error registering user.');
+		throw new Error(err.message || 'Error registering user.');
 	}
 };
 
