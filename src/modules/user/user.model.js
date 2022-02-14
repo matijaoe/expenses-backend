@@ -103,11 +103,17 @@ userSchema.pre('save', async function (next) {
 });
 
 // Delete user expenses when user is removed
-userSchema.pre('remove', async function (next) {
-	const user = this;
-	await Expense.deleteMany({ owner: user._id });
-	next();
-});
+userSchema.pre(
+	'deleteOne',
+	// TODO: not working
+	{ document: true, query: false },
+	async function (next) {
+		const user = this;
+		const res = await Expense.deleteMany({ owner: user._id });
+		console.log('res', res);
+		next();
+	}
+);
 
 const User = new mongoose.model('User', userSchema);
 
