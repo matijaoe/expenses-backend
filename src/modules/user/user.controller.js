@@ -85,7 +85,7 @@ export const deleteUser = async (req, res) => {
 };
 
 const isValidUpdate = (updates, isAdmin = false) => {
-	const allowedUpdates = ['name', 'email', 'password'];
+	const allowedUpdates = ['name', 'email', 'password', 'role'];
 	if (isAdmin) {
 		allowedUpdates.push('role');
 		allowedUpdates.splice(updates.indexOf('password'), 1);
